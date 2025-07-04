@@ -17,6 +17,7 @@ runs:
       run: |
        ls -a
        pwd
+       echo "Action path: ${{ github.action_path }}"
        chmod +x ./scanner
        mkdir -p ${{ github.workspace }}/output
        ./scanner --output ${{ github.workspace }}/output
