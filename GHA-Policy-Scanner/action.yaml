@@ -1,0 +1,50 @@
+name: "Workflow Security Policy Scanner"
+description: "Scans GitHub workflows against security policies"
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install PyYAML
+      shell: bash
+      run: pip install pyyaml
+
+    - name: Run Scanner
+      shell: bash
+      run: |
+       ls -a
+       chmod +x .github/actions/GHA-Policy-Scanner/scanner
+       mkdir -p ${{ github.workspace }}/output
+       ./.github/actions/GHA-Policy-Scanner/scanner --output ${{ github.workspace }}/output
+       #  python .github/actions/GHA-Policy-Scanner/scanner.py
+       # python ${{ github.action_path }}/scanner.py
+
+    - name: Upload scan score report as artifact
+      if: (env.SCORE_REPORT_PATH != '' && env.MD_FILE_PATH != '') && github.event_name != 'pull_request'
+      uses: actions/upload-artifact@v4
+      with:
+        name: scan-results
+        path: |
+          ${{ env.SCORE_REPORT_PATH }}
+          ${{ env.MD_FILE_PATH }}
+    
+    - name: Comment scorecard on PR
+      if: env.SCORE_REPORT_PATH != '' && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ env.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const scorecard = fs.readFileSync(process.env.SCORE_REPORT_PATH, 'utf8');
+          const body = `\n${scorecard}`;
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body
+          });
+      env:
+        SCORE_REPORT_PATH: ${{ env.SCORE_REPORT_PATH }}
