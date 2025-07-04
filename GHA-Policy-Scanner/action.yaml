@@ -18,9 +18,9 @@ runs:
        ls -a
        pwd
        echo "Action path: ${{ github.action_path }}"
-       chmod +x ./scanner
+       chmod +x ${{ github.action_path }}/scanner
        mkdir -p ${{ github.workspace }}/output
-       ./scanner --output ${{ github.workspace }}/output
+        ${{ github.action_path }}/scanner --output ${{ github.workspace }}/output
        #  python .github/actions/GHA-Policy-Scanner/scanner.py
        # python ${{ github.action_path }}/scanner.py
 
