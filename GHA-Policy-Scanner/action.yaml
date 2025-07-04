@@ -16,6 +16,7 @@ runs:
       shell: bash
       run: |
        ls -a
+       pwd
        chmod +x ./scanner
        mkdir -p ${{ github.workspace }}/output
        ./scanner --output ${{ github.workspace }}/output
