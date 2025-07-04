@@ -16,9 +16,9 @@ runs:
       shell: bash
       run: |
        ls -a
-       chmod +x .github/actions/GHA-Policy-Scanner/scanner
+       chmod +x ./scanner
        mkdir -p ${{ github.workspace }}/output
-       ./.github/actions/GHA-Policy-Scanner/scanner --output ${{ github.workspace }}/output
+       ./scanner --output ${{ github.workspace }}/output
        #  python .github/actions/GHA-Policy-Scanner/scanner.py
        # python ${{ github.action_path }}/scanner.py
 
