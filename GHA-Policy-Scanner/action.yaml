@@ -27,9 +27,15 @@ runs:
        ls -a
        pwd
        echo "Action path: ${{ github.action_path }}"
-       chmod +x ${{ github.action_path }}/scanner
-       mkdir -p ${{ github.workspace }}/output
-        ${{ github.action_path }}/scanner --output ${{ github.workspace }}/output
+       if [[ "${{ inputs.platform }}" == "windows" ]]; then
+         chmod +x ${{ github.action_path }}//windows/scanner
+         mkdir -p ${{ github.workspace }}/windows/output
+         ${{ github.action_path }}/windows/scanner.exe --output ${{ github.workspace }}/windows/output
+       else
+         chmod +x ${{ github.action_path }}/scanner
+         mkdir -p ${{ github.workspace }}/output
+         ${{ github.action_path }}/scanner --output ${{ github.workspace }}/output
+       fi
        #  python .github/actions/GHA-Policy-Scanner/scanner.py
        # python ${{ github.action_path }}/scanner.py
 
