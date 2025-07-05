@@ -29,7 +29,7 @@ runs:
        echo "Action path: ${{ github.action_path }}"
        if [[ "${{ inputs.platform }}" == "windows" ]]; then
          echo "running windows"
-         chmod +x "${{ github.action_path }}//windows/scanner"
+         #chmod +x "${{ github.action_path }}//windows/scanner"
          mkdir -p "${{ github.workspace }}/windows/output"
          "${{ github.action_path }}/windows/scanner.exe" --output "${{ github.workspace }}/windows/output"
        else
