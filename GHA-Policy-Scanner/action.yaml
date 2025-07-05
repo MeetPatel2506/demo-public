@@ -33,6 +33,7 @@ runs:
          mkdir -p "${{ github.workspace }}/output"
          ls -a
          "${{ github.action_path }}/windows/scanner.exe" --output "${{ github.workspace }}/output"
+         echo $?
          echo "Ending........."
        else
          chmod +x ${{ github.action_path }}/scanner
